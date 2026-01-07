@@ -1,35 +1,21 @@
-import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 // import { loginSuccess } from '@repo/shared-store'
 import type { RootState } from '@repo/shared-store'
 
 export default function ProfileApp() {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const storeUser = useSelector((s: RootState) => s?.auth?.user)
   console.log("Profile sstore", storeUser)
-  useEffect(() => {
-    // if (!storeUser) {
-      const storedUser = localStorage.getItem('user')
-      if (storedUser) {
-        // const parsed = JSON.parse(storedUser)
-        // map stored user to shared-store User shape (use email as id if needed)
-        // dispatch(loginSuccess({ id: parsed.id ?? parsed.email, role: 'USER' }))
-      } else {
-        navigate('/login')
-      }
-    // }
-  }, [navigate, dispatch])
 
   const handleLogout = () => {
     localStorage.removeItem('user')
     navigate('/')
   }
 
-  // if (!storeUser) {
-  //   return <div className="flex items-center justify-center min-h-screen">Loading...</div>
-  // }
+  if (!storeUser) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
+  }
 
   const email = storeUser?.id || 'test' // using id as email mapping
 
